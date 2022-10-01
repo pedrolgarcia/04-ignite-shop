@@ -1,13 +1,9 @@
 import Image from "next/future/image";
 import { useKeenSlider } from "keen-slider/react"
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import Stripe from "stripe";
 
 import { HomeContainer, Product } from "../styles/pages/home";
-
-import camiseta1 from "../assets/camisetas/1.png"
-import camiseta2 from "../assets/camisetas/2.png"
-import camiseta3 from "../assets/camisetas/3.png"
 
 import { stripe } from "../lib/stripe";
 
@@ -46,7 +42,21 @@ export default function Home({ products }: HomeProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+/* 
+  getServerSideProps
+  uma função que executa do lado do servidor, ou seja, antes da interface chegar ao cliente
+  é executado em toda a requisição e a página do browser só carrega após o fim da execução dessa função
+  conseguimos ter acesso ao contexto da requisição (req, res)
+
+  getStaticProps
+  uma função que executa só quando o Next criar uma versão de cache nova da página em questão, ou seja,
+  quando fizermos um novo deploy (build) OU passando um parâmetro "revalidate" no retorno da função indicando o tempo
+  que o Next vai fazer essa build automaticamente
+
+  !! Em desenvolvimento, o next trata getServerSideProps exatamentes igual getStaticProps
+*/
+
+export const getStaticProps: GetStaticProps = async () => {
   const response = await stripe.products.list({
     expand: ["data.default_price"]
   })
@@ -58,13 +68,17 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: price.unit_amount / 100
+      price: new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      }).format(price.unit_amount / 100)
     }
   })
 
   return {
     props: {
       products
-    }
+    },
+    revalidate: 60 * 60 * 2 // 2 horas
   }
 }
