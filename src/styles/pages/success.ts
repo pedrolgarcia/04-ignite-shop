@@ -27,7 +27,8 @@ export const SuccessContainer = styled("main", {
     fontSize: "$lg",
     color: "$green500",
     marginTop: "5rem",
-    textDecoration: "none"
+    textDecoration: "none",
+    fontWeight: "bold"
   },
 
   "&:hover": {
