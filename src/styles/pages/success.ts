@@ -25,13 +25,13 @@ export const SuccessContainer = styled("main", {
   a: {
     display: "block",
     fontSize: "$lg",
-    color: "$gray500",
+    color: "$green500",
     marginTop: "5rem",
     textDecoration: "none"
   },
 
   "&:hover": {
-    color: "$gray300", 
+    color: "$green300", 
   }
 })
 
