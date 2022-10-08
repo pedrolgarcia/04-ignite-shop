@@ -8,16 +8,23 @@ import { CartBadge, CartButton, Container, Header } from "../styles/pages/app"
 import { Cart } from "../components/Cart"
 
 import logoImg from "../assets/logo.svg"
+import { useState } from "react"
 
 globalStyles()
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [isCartOpened, setIsCartOpened] = useState(false)
+
+  function handleToggleCart() {
+    setIsCartOpened(!isCartOpened)
+  }
+
   return (
     <Container>
       <Header>
         <Image src={logoImg} alt="" />
 
-        <CartButton>
+        <CartButton onClick={handleToggleCart}>
           <Handbag size={24} weight="bold" />
 
           <CartBadge>
@@ -28,7 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <Component {...pageProps} />
 
-      <Cart />
+      <Cart isCartOpened={isCartOpened} />
     </Container>
   )
 }
