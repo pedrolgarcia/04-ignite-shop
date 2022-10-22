@@ -1,3 +1,5 @@
+import { useState } from "react"
+import { useRouter } from "next/router"
 import { AppProps } from "next/app"
 import Image from "next/future/image"
 import { Handbag } from "phosphor-react"
@@ -8,11 +10,12 @@ import { CartBadge, CartButton, Container, Header } from "../styles/pages/app"
 import { Cart } from "../components/Cart"
 
 import logoImg from "../assets/logo.svg"
-import { useState } from "react"
 
 globalStyles()
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
   const [isCartOpened, setIsCartOpened] = useState(false)
 
   function handleToggleCart() {
@@ -25,16 +28,18 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <Container>
-      <Header>
+      <Header centered={router.pathname === "/success"}>
         <Image src={logoImg} alt="" />
 
-        <CartButton onClick={handleToggleCart}>
-          <Handbag size={24} weight="bold" />
+        {router.pathname !== "/success" && (
+          <CartButton onClick={handleToggleCart}>
+            <Handbag size={24} weight="bold" />
 
-          <CartBadge>
-            <strong>1</strong>
-          </CartBadge>
-        </CartButton>
+            <CartBadge>
+              <strong>1</strong>
+            </CartBadge>
+          </CartButton>
+        )}
       </Header>
 
       <Component {...pageProps} />
