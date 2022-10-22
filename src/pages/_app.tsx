@@ -19,6 +19,10 @@ export default function App({ Component, pageProps }: AppProps) {
     setIsCartOpened(!isCartOpened)
   }
 
+  function closeCart() {
+    setIsCartOpened(false)
+  }
+
   return (
     <Container>
       <Header>
@@ -35,7 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <Component {...pageProps} />
 
-      <Cart isCartOpened={isCartOpened} />
+      <Cart isCartOpened={isCartOpened} closeCart={closeCart} />
     </Container>
   )
 }

@@ -1,11 +1,12 @@
 import Image from "next/future/image";
-import { useKeenSlider } from "keen-slider/react"
-import { GetStaticProps } from "next";
 import Link from "next/link";
 import Head from "next/head";
+import { GetStaticProps } from "next";
+import { useKeenSlider } from "keen-slider/react"
+import { Handbag } from "phosphor-react";
 import Stripe from "stripe";
 
-import { HomeContainer, Product } from "../styles/pages/home";
+import { CartButton, HomeContainer, Product, ProductInfo } from "../styles/pages/home";
 
 import { stripe } from "../lib/stripe";
 
@@ -28,6 +29,8 @@ export default function Home({ products }: HomeProps) {
     }
   })
 
+  function handleAddProductToCart() {}
+
   return (
     <>
       <Head>
@@ -41,8 +44,14 @@ export default function Home({ products }: HomeProps) {
               <Image src={product.imageUrl} width={520} height={480} alt="" />
 
               <footer>
-                <strong>{product.name}</strong>
-                <span>{product.price}</span>
+                <ProductInfo>
+                  <strong>{product.name}</strong>
+                  <span>{product.price}</span>
+                </ProductInfo>
+
+                <CartButton onClick={handleAddProductToCart}>
+                  <Handbag size={24} weight="bold" />
+                </CartButton>
               </footer>
             </Product>
           </Link>

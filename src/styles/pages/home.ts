@@ -41,17 +41,6 @@ export const Product = styled("div", {
     transform: "translateY(110%)",
     opacity: 0,
     transition: "all 0.2s ease-in-out",
-
-    strong: {
-      fontSize: "$lg",
-      color: "$gray100"
-    },
-
-    span: {
-      fontSize: "$xl",
-      fontWeight: "bold",
-      color: "$green300"
-    }
   },
 
   "&:hover": {
@@ -59,5 +48,49 @@ export const Product = styled("div", {
       transform: "translateY(0%)",
       opacity: 1
     }
+  }
+})
+
+export const ProductInfo = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+
+  marginRight: "0.25rem",
+
+  strong: {
+    fontSize: "$lg",
+    color: "$gray100",
+    marginBottom: "0.25rem"
+  },
+
+  span: {
+    fontSize: "$xl",
+    fontWeight: "bold",
+    color: "$green300"
+  }
+})
+
+export const CartButton = styled("button", {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+
+  position: "relative",
+  padding: "0.75rem",
+  borderRadius: 6,
+  border: 0,
+  outline: 0,
+  backgroundColor: "$green500",
+
+  cursor: "pointer",
+
+  transition: "filter 0.2s",
+
+  "&:hover": {
+    filter: "brightness(0.8)"
+  },
+
+  svg: {
+    color: "$white",
   }
 })
