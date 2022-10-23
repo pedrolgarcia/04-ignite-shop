@@ -8,20 +8,21 @@ import Stripe from "stripe";
 
 import { CartButton, HomeContainer, Product, ProductInfo } from "../styles/pages/home";
 
+import { useCart } from "../hooks/useCart";
+
 import { stripe } from "../lib/stripe";
 
 import "keen-slider/keen-slider.min.css"
 
+import { Product as ProductDTO } from "../reducers/cart/reducer";
+
 interface HomeProps {
-  products: {
-    id: string
-    name: string
-    imageUrl: string
-    price: string
-  }[]
+  products: ProductDTO[]
 }
 
 export default function Home({ products }: HomeProps) {
+  const { addItem, itens } = useCart()
+
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -29,7 +30,10 @@ export default function Home({ products }: HomeProps) {
     }
   })
 
-  function handleAddProductToCart() {}
+  function handleAddProductToCart(e: any, product: ProductDTO, quantity = 1) {
+    e.preventDefault();
+    addItem(product, quantity)
+  }
 
   return (
     <>
@@ -49,7 +53,7 @@ export default function Home({ products }: HomeProps) {
                   <span>{product.price}</span>
                 </ProductInfo>
 
-                <CartButton onClick={handleAddProductToCart}>
+                <CartButton type="button" onClick={(e) => handleAddProductToCart(e, product)}>
                   <Handbag size={24} weight="bold" />
                 </CartButton>
               </footer>
