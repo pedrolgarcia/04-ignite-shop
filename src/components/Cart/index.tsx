@@ -4,12 +4,16 @@ import { CartContainer, CartContent, CartItems, CloseButton, Resume } from "./st
 
 import { CartItem } from "./components/CartItem";
 
+import { useCart } from "../../hooks/useCart";
+
 interface CartProps {
   isCartOpened: boolean
   closeCart(): void
 }
 
 export function Cart({ isCartOpened, closeCart }: CartProps) {
+  const { itens } = useCart()
+
   function handleCloseCart() {
     closeCart()
   }
@@ -25,9 +29,9 @@ export function Cart({ isCartOpened, closeCart }: CartProps) {
 
         <CartItems>
           <div>
-            <CartItem />
-            <CartItem />
-            <CartItem />
+            {itens.map((item) => (
+              <CartItem key={item.id} cartItem={item} />
+            ))}
           </div>
 
           <footer>

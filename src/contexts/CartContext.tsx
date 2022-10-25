@@ -5,6 +5,7 @@ import { CartItem, cartReducer, Product } from '../reducers/cart/reducer'
 import {
   addItemAction,
   removeItemAction,
+  setItensFromCookies
 } from '../reducers/cart/actions'
 
 interface CartContextData {
@@ -38,10 +39,10 @@ export function CartContextProvider({
           itens: []
         }
       }
-    },
+    }
   )
 
-  const { itens } = cartState
+  const { itens } = cartState  
 
   useEffect(() => {
     const stateJSON = JSON.stringify(cartState)

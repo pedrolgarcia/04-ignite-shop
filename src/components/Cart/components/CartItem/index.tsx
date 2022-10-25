@@ -1,20 +1,32 @@
 import Image from "next/future/image";
 import { CartItemContainer, ImageContainer, ItemInfo, RemoveItemButton } from "./styles";
 
-import shirtImg from "../../../../assets/camisetas/1.png"
+import { CartItem } from "../../../../reducers/cart/reducer";
 
-export function CartItem() {
+import { useCart } from "../../../../hooks/useCart";
+
+interface CartItemProps {
+  cartItem: CartItem
+}
+
+export function CartItem({ cartItem }: CartItemProps) {
+  const { removeItem } = useCart()
+
+  function handleRemoveItemFromCart() {
+    removeItem(cartItem.id)
+  }
+
   return (
     <CartItemContainer>
       <ImageContainer>
-        <Image src={shirtImg} alt="" />
+        <Image src={cartItem?.product?.imageUrl} width={93} height={93} alt="" />
       </ImageContainer>
 
       <ItemInfo>
-        <p>Camiseta Beyond the limits</p>
-        <strong>R$ 79,90</strong>
+        <p>{cartItem?.product?.name}</p>
+        <strong>{cartItem?.product?.price}</strong>
 
-        <RemoveItemButton>
+        <RemoveItemButton onClick={handleRemoveItemFromCart}>
           Remover
         </RemoveItemButton>
       </ItemInfo>

@@ -1,19 +1,22 @@
-import { useState } from "react"
+import { ReactNode, useState } from "react"
 import { useRouter } from "next/router"
-import { AppProps } from "next/app"
 import Image from "next/future/image"
 import Link from "next/link"
 import { Handbag } from "phosphor-react"
 
-import { CartBadge, CartButton, Container, Header } from "../styles/pages/app"
+import { CartBadge, CartButton, Container, Header } from "./styles"
 
-import { Cart } from "../components/Cart"
+import { Cart } from "../Cart"
 
-import { useCart } from "../hooks/useCart"
+import { useCart } from "../../hooks/useCart"
 
-import logoImg from "../assets/logo.svg"
+import logoImg from "../../assets/logo.svg"
 
-export function Layout({ Component, pageProps }: AppProps) {
+interface LayoutProps {
+  children: ReactNode
+}
+
+export function Layout({ children }: LayoutProps) {
   const router = useRouter()
   const { itens } = useCart()
 
@@ -46,8 +49,8 @@ export function Layout({ Component, pageProps }: AppProps) {
           </CartButton>
         )}
       </Header>
-      
-      <Component {...pageProps} />
+    
+      { children }
 
       <Cart isCartOpened={isCartOpened} closeCart={closeCart} />
     </Container>

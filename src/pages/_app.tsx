@@ -4,14 +4,16 @@ import { globalStyles } from "../styles/global"
 
 import { CartContextProvider } from "../contexts/CartContext"
 
-import { Layout } from "./_layout"
+import { Layout } from "../components/Layout"
 
 globalStyles()
 
-export default function App(appProps: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <CartContextProvider>
-      <Layout {...appProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </CartContextProvider>
   )
 }

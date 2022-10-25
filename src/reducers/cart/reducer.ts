@@ -25,7 +25,6 @@ export function cartReducer(state: CartState, action: any) {
   switch (action.type) {
     case ActionTypes.ADD_ITEM:
       return produce(state, (draft) => {
-        var existentItem = draft.itens.find(item => item.product.id === action.payload.product.id)
         const existentItemIndex = state.itens.findIndex(
           (item) => item.product.id === action.payload.product.id,
         )
@@ -48,6 +47,11 @@ export function cartReducer(state: CartState, action: any) {
     case ActionTypes.REMOVE_ITEM:
       return produce(state, (draft) => {
         draft.itens.filter(item => item.id === action.payload.itemId)
+      })
+
+    case ActionTypes.SET_ITENS_FROM_COOKIES:
+      return produce(state, (draft) => {
+        draft.itens = action.payload.itens
       })
 
     default:
