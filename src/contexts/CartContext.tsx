@@ -80,7 +80,7 @@ export function CartContextProvider({
   function removeItem(itemId: string) {
     setItens((state) => {
       return produce(state, (draft) => {
-        draft.filter(item => item.id === itemId)
+        return draft.filter(item => item.id != itemId)
       })
     })
   }

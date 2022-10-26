@@ -29,7 +29,7 @@ export function Cart({ isCartOpened, closeCart }: CartProps) {
 
         <CartItems>
           <div>
-            {itens.map((item) => (
+            {itens?.map((item) => (
               <CartItem key={item.id} cartItem={item} />
             ))}
           </div>
@@ -37,7 +37,7 @@ export function Cart({ isCartOpened, closeCart }: CartProps) {
           <footer>
             <Resume>
               <p>Quantidade</p>
-              <p>3 itens</p>
+              <p>{itens.length == 0 ? "Nenhum item" : (itens.length == 1 ? "1 item" : `${itens?.length} itens`)}</p>
             </Resume>
 
             <Resume>
