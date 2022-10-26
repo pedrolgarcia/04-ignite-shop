@@ -14,7 +14,7 @@ import { stripe } from "../lib/stripe";
 
 import "keen-slider/keen-slider.min.css"
 
-import { Product as ProductDTO } from "../reducers/cart/reducer";
+import { Product as ProductDTO } from "../contexts/CartContext";
 
 interface HomeProps {
   products: ProductDTO[]

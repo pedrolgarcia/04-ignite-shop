@@ -1,7 +1,7 @@
 import Image from "next/future/image";
 import { CartItemContainer, ImageContainer, ItemInfo, RemoveItemButton } from "./styles";
 
-import { CartItem } from "../../../../reducers/cart/reducer";
+import { CartItem } from "../../../../contexts/CartContext";
 
 import { useCart } from "../../../../hooks/useCart";
 
