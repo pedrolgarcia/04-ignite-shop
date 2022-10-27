@@ -12,7 +12,7 @@ interface CartProps {
 }
 
 export function Cart({ isCartOpened, closeCart }: CartProps) {
-  const { itens } = useCart()
+  const { itens, total } = useCart()
 
   function handleCloseCart() {
     closeCart()
@@ -42,7 +42,7 @@ export function Cart({ isCartOpened, closeCart }: CartProps) {
 
             <Resume>
               <strong>Valor total</strong>
-              <strong>R$ 270,00</strong>
+              <strong>{total}</strong>
             </Resume>
 
             <button>Finalizar compra</button>

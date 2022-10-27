@@ -19,6 +19,7 @@ export interface CartItem {
 
 interface CartContextData {
   itens: CartItem[]
+  total: number
   addItem: (product: Product, quantity: number) => void
   removeItem: (itemId: string) => void
 }
@@ -33,6 +34,10 @@ export function CartContextProvider({
   children,
 }: CartContextProviderProps) {
   const [itens, setItens] = useState<CartItem[]>([])
+
+  const total = itens.reduce((acc, current) => {
+    return acc + Number(current.product.price.replace("R$", "").replace(",", "."))
+  }, 0)
 
   useEffect(() => {
     const cookies = parseCookies()
@@ -90,7 +95,8 @@ export function CartContextProvider({
       value={{
         itens,
         addItem,
-        removeItem
+        removeItem,
+        total
       }}
     >
       {children}
