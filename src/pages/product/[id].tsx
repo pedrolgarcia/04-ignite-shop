@@ -9,13 +9,14 @@ import axios from "axios"
 import { stripe } from "../../lib/stripe"
 
 import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/pages/product"
+import { priceFormatter } from "../../utils/formatter"
 
 interface ProductProps {
   product: {
     id: string
     name: string
     imageUrl: string
-    price: string
+    price: number
     description: string
     defaultPriceId: string
   }
@@ -64,7 +65,7 @@ export default function Product({ product }: ProductProps) {
 
         <ProductDetails>
           <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <span>{priceFormatter.format(product.price)}</span>
 
           <p>{product.description}</p>
 
@@ -99,10 +100,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL"
-        }).format(price.unit_amount / 100),
+        price: price.unit_amount / 100,
         description: product.description,
         defaultPriceId: price.id
       }

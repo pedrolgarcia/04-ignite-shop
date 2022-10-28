@@ -15,13 +15,14 @@ import { stripe } from "../lib/stripe";
 import "keen-slider/keen-slider.min.css"
 
 import { Product as ProductDTO } from "../contexts/CartContext";
+import { priceFormatter } from "../utils/formatter";
 
 interface HomeProps {
   products: ProductDTO[]
 }
 
 export default function Home({ products }: HomeProps) {
-  const { addItem, itens } = useCart()
+  const { addItem } = useCart()
 
   const [sliderRef] = useKeenSlider({
     slides: {
@@ -50,7 +51,7 @@ export default function Home({ products }: HomeProps) {
               <footer>
                 <ProductInfo>
                   <strong>{product.name}</strong>
-                  <span>{product.price}</span>
+                  <span>{priceFormatter.format(product.price)}</span>
                 </ProductInfo>
 
                 <CartButton type="button" onClick={(e) => handleAddProductToCart(e, product)}>
@@ -91,10 +92,7 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-      }).format(price.unit_amount / 100)
+      price: price.unit_amount / 100
     }
   })
 

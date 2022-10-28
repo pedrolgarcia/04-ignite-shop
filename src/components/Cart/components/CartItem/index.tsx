@@ -1,9 +1,11 @@
 import Image from "next/future/image";
-import { CartItemContainer, ImageContainer, ItemInfo, RemoveItemButton } from "./styles";
+import { CartItemContainer, ImageContainer, ItemFooter, ItemInfo, RemoveItemButton } from "./styles";
 
 import { CartItem } from "../../../../contexts/CartContext";
 
 import { useCart } from "../../../../hooks/useCart";
+
+import { priceFormatter } from "../../../../utils/formatter";
 
 interface CartItemProps {
   cartItem: CartItem
@@ -24,11 +26,15 @@ export function CartItem({ cartItem }: CartItemProps) {
 
       <ItemInfo>
         <p>{cartItem?.product?.name}</p>
-        <strong>{cartItem?.product?.price}</strong>
+        <strong>{priceFormatter.format(cartItem?.product?.price)}</strong>
 
-        <RemoveItemButton onClick={handleRemoveItemFromCart}>
-          Remover
-        </RemoveItemButton>
+        <ItemFooter>
+          <RemoveItemButton onClick={handleRemoveItemFromCart}>
+            Remover
+          </RemoveItemButton>
+
+          <span>x{cartItem.quantity}</span>
+        </ItemFooter>
       </ItemInfo>
     </CartItemContainer>
   )

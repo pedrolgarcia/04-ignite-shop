@@ -7,7 +7,7 @@ export interface Product {
   id: string
   name: string
   imageUrl: string
-  price: string
+  price: number
 }
 
 export interface CartItem {
@@ -20,6 +20,7 @@ export interface CartItem {
 interface CartContextData {
   itens: CartItem[]
   total: number
+  quantity: number
   addItem: (product: Product, quantity: number) => void
   removeItem: (itemId: string) => void
 }
@@ -36,7 +37,10 @@ export function CartContextProvider({
   const [itens, setItens] = useState<CartItem[]>([])
 
   const total = itens.reduce((acc, current) => {
-    return acc + Number(current.product.price.replace("R$", "").replace(",", "."))
+    return acc + current.product.price * current.quantity
+  }, 0)
+  const quantity = itens.reduce((acc, current) => {
+    return acc + current.quantity
   }, 0)
 
   useEffect(() => {
@@ -68,15 +72,15 @@ export function CartContextProvider({
         if (existentItemIndex < 0) {
           var cartItem: CartItem = {
             id: uuidv4(),
-            product: product,
-            quantity: quantity,
-            total: Number(product.price.replace("R$", "").replace(",", ".")),
+            product,
+            quantity,
+            total: product.price,
           }
           
-          draft.push(cartItem)
+          draft.unshift(cartItem)
         } else {
           draft[existentItemIndex].quantity += quantity
-          draft[existentItemIndex].total += Number(product.price.replace("R$", "").replace(",", "."))
+          draft[existentItemIndex].total += product.price
         }
       })
     })
@@ -96,7 +100,8 @@ export function CartContextProvider({
         itens,
         addItem,
         removeItem,
-        total
+        total,
+        quantity
       }}
     >
       {children}

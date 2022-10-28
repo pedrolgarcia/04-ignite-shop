@@ -28,6 +28,8 @@ export const ItemInfo = styled("div", {
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
+
+  width: "100%",
   
   p: {
     fontSize: "$md",
@@ -61,4 +63,12 @@ export const RemoveItemButton = styled("button", {
   "&:hover": {
     color: "$green300"
   }
+})
+
+export const ItemFooter = styled("div", {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+
+  width: "100%"
 })

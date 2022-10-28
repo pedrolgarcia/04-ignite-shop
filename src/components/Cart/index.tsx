@@ -5,6 +5,7 @@ import { CartContainer, CartContent, CartItems, CloseButton, Resume } from "./st
 import { CartItem } from "./components/CartItem";
 
 import { useCart } from "../../hooks/useCart";
+import { priceFormatter } from "../../utils/formatter";
 
 interface CartProps {
   isCartOpened: boolean
@@ -12,7 +13,7 @@ interface CartProps {
 }
 
 export function Cart({ isCartOpened, closeCart }: CartProps) {
-  const { itens, total } = useCart()
+  const { itens, total, quantity } = useCart()
 
   function handleCloseCart() {
     closeCart()
@@ -37,12 +38,12 @@ export function Cart({ isCartOpened, closeCart }: CartProps) {
           <footer>
             <Resume>
               <p>Quantidade</p>
-              <p>{itens.length == 0 ? "Nenhum item" : (itens.length == 1 ? "1 item" : `${itens?.length} itens`)}</p>
+              <p>{quantity == 0 ? "Nenhum item" : (quantity == 1 ? "1 item" : `${quantity} itens`)}</p>
             </Resume>
 
             <Resume>
               <strong>Valor total</strong>
-              <strong>{total}</strong>
+              <strong>{priceFormatter.format(total)}</strong>
             </Resume>
 
             <button>Finalizar compra</button>

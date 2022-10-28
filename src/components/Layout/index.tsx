@@ -18,7 +18,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const router = useRouter()
-  const { itens } = useCart()
+  const { itens, quantity } = useCart()
 
   const [isCartOpened, setIsCartOpened] = useState(false)
 
@@ -41,9 +41,9 @@ export function Layout({ children }: LayoutProps) {
           <CartButton onClick={handleToggleCart}>
             <Handbag size={24} weight="bold" />
 
-            {itens?.length > 0 && (
+            {quantity > 0 && (
               <CartBadge>
-                <strong>{itens?.length}</strong>
+                <strong>{quantity}</strong>
               </CartBadge>
             )}
           </CartButton>
