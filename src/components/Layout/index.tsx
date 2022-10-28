@@ -18,7 +18,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const router = useRouter()
-  const { itens, quantity } = useCart()
+  const { quantity } = useCart()
 
   const [isCartOpened, setIsCartOpened] = useState(false)
 

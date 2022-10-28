@@ -8,6 +8,8 @@ export interface Product {
   name: string
   imageUrl: string
   price: number
+  description: string
+  defaultPriceId: string
 }
 
 export interface CartItem {
@@ -18,7 +20,7 @@ export interface CartItem {
 }
 
 interface CartContextData {
-  itens: CartItem[]
+  items: CartItem[]
   total: number
   quantity: number
   addItem: (product: Product, quantity: number) => void
@@ -34,36 +36,35 @@ interface CartContextProviderProps {
 export function CartContextProvider({
   children,
 }: CartContextProviderProps) {
-  const [itens, setItens] = useState<CartItem[]>([])
+  const [items, setItems] = useState<CartItem[]>([])
 
-  const total = itens.reduce((acc, current) => {
+  const total = items.reduce((acc, current) => {
     return acc + current.product.price * current.quantity
   }, 0)
-  const quantity = itens.reduce((acc, current) => {
+  const quantity = items.reduce((acc, current) => {
     return acc + current.quantity
   }, 0)
 
   useEffect(() => {
     const cookies = parseCookies()
-    const storedStateAsJSON = cookies["@ignite-shop:cart-itens-state-1.0.0"]
-    console.log(storedStateAsJSON)
+    const storedStateAsJSON = cookies["@ignite-shop:cart-items-state-1.0.0"]
 
     if (storedStateAsJSON) {
-      setItens(JSON.parse(storedStateAsJSON))
+      setItems(JSON.parse(storedStateAsJSON))
     } else {
-      setItens([])
+      setItems([])
     }
   }, [])
 
   useEffect(() => {
-    if (itens.length > 0) {
-      const stateJSON = JSON.stringify(itens)
-      setCookie(null, '@ignite-shop:cart-itens-state-1.0.0', stateJSON)
+    if (items.length > 0) {
+      const stateJSON = JSON.stringify(items)
+      setCookie(null, '@ignite-shop:cart-items-state-1.0.0', stateJSON)
     }
-  }, [itens])
+  }, [items])
 
   function addItem(product: Product, quantity) {
-    setItens((state) => {
+    setItems((state) => {
       return produce(state, (draft) => {
         const existentItemIndex = state.findIndex(
           (item) => item.product.id === product.id,
@@ -87,7 +88,7 @@ export function CartContextProvider({
   }
 
   function removeItem(itemId: string) {
-    setItens((state) => {
+    setItems((state) => {
       return produce(state, (draft) => {
         return draft.filter(item => item.id != itemId)
       })
@@ -97,7 +98,7 @@ export function CartContextProvider({
   return (
     <CartContext.Provider
       value={{
-        itens,
+        items,
         addItem,
         removeItem,
         total,

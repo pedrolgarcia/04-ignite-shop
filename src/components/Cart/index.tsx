@@ -1,6 +1,8 @@
-import { X } from "phosphor-react";
+import { useState } from "react";
+import { ShoppingBagOpen, X } from "phosphor-react";
+import axios from "axios";
 
-import { CartContainer, CartContent, CartItems, CloseButton, Resume } from "./styles";
+import { CartContainer, CartContent, CartItems, CartItemsContainer, CloseButton, EmptyCart, Resume } from "./styles";
 
 import { CartItem } from "./components/CartItem";
 
@@ -12,11 +14,43 @@ interface CartProps {
   closeCart(): void
 }
 
+interface CheckoutData {
+  price: string
+  quantity: number
+}
+
 export function Cart({ isCartOpened, closeCart }: CartProps) {
-  const { itens, total, quantity } = useCart()
+  const { items, total, quantity } = useCart()
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
 
   function handleCloseCart() {
     closeCart()
+  }
+
+  async function handleBuyProduct() {
+    try {
+      setIsCreatingCheckoutSession(true)
+      
+      const data: CheckoutData[] = items.map((item) => ({
+        price: item.product.defaultPriceId,
+        quantity: item.quantity
+      }))
+
+      const response = await axios.post("/api/checkout", {
+        items: data
+      })
+
+      const { checkoutUrl } = response.data
+
+      window.location.href = checkoutUrl
+    } catch(err) {
+      // Conectar com uma ferramenta de observabilidade (Datadog / Sentry)
+      console.log(err)
+
+      setIsCreatingCheckoutSession(false)
+
+      alert("Falha ao redirecionar para o checkout!")
+    }
   }
 
   return (
@@ -29,11 +63,18 @@ export function Cart({ isCartOpened, closeCart }: CartProps) {
         <strong>Sacola de compras</strong>
 
         <CartItems>
-          <div>
-            {itens?.map((item) => (
-              <CartItem key={item.id} cartItem={item} />
-            ))}
-          </div>
+          {items.length > 0 ? (
+            <CartItemsContainer>
+              {items?.map((item) => (
+                <CartItem key={item.id} cartItem={item} />
+              ))}
+            </CartItemsContainer>
+          ) : (
+            <EmptyCart>
+              <ShoppingBagOpen weight="thin" size={30} />
+              <p>Carrinho vazio</p>
+            </EmptyCart>
+          )}
 
           <footer>
             <Resume>
@@ -46,7 +87,7 @@ export function Cart({ isCartOpened, closeCart }: CartProps) {
               <strong>{priceFormatter.format(total)}</strong>
             </Resume>
 
-            <button>Finalizar compra</button>
+            <button onClick={handleBuyProduct} disabled={isCreatingCheckoutSession}>Finalizar compra</button>
           </footer>
         </CartItems>
       </CartContent>

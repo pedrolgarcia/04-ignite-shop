@@ -63,18 +63,18 @@ export const CartContent = styled("div", {
   }
 })
 
+export const CartItemsContainer = styled("div", {
+  display: "flex",
+  gap: "1.5rem",
+  flexDirection: "column",
+})
+
 export const CartItems = styled("div", {
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
 
   height: "100%",
-
-  "> div": {
-    display: "flex",
-    gap: "1.5rem",
-    flexDirection: "column",
-  },
 
   footer: {
     display: "flex",
@@ -102,6 +102,21 @@ export const CartItems = styled("div", {
         backgroundColor: "$green300"
       }
     }
+  }
+})
+
+export const EmptyCart = styled("div", {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexDirection: "column",
+  flex: 1,
+  
+  opacity: 0.5,
+  marginBottom: 50,
+
+  svg: {
+    marginBottom: 10
   }
 })
 
