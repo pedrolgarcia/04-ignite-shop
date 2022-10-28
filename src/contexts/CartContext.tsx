@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { parseCookies, setCookie } from 'nookies'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { v4 as uuidv4 } from 'uuid';
 import produce from 'immer'
 
@@ -25,6 +25,7 @@ interface CartContextData {
   quantity: number
   addItem: (product: Product, quantity: number) => void
   removeItem: (itemId: string) => void
+  clearCart: () => void
 }
 
 export const CartContext = createContext({} as CartContextData)
@@ -95,6 +96,11 @@ export function CartContextProvider({
     })
   }
 
+  function clearCart() {
+    destroyCookie(null, '@ignite-shop:cart-items-state-1.0.0')
+    setItems([])
+  }
+
   return (
     <CartContext.Provider
       value={{
@@ -102,7 +108,8 @@ export function CartContextProvider({
         addItem,
         removeItem,
         total,
-        quantity
+        quantity,
+        clearCart
       }}
     >
       {children}
